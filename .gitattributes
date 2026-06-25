@@ -1,0 +1,12 @@
+* text=auto
+
+# Shell scripts should keep LF
+*.sh text eol=lf
+*.mjs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Windows batch files should keep CRLF
+*.bat text eol=crlf

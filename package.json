@@ -1,0 +1,33 @@
+{
+  "name": "video-storyboard",
+  "version": "1.0.0",
+  "description": "视频分镜生成工具:视频+字幕 -> 抽帧 -> AI画面解读 -> 分镜表。一键双击运行。",
+  "type": "module",
+  "scripts": {
+    "extract": "node extract_storyboard.mjs",
+    "analyze": "node analyze_frames.mjs",
+    "report": "node build_report.mjs"
+  },
+  "dependencies": {
+    "@idk500/video-vision-mcp": "^1.2.0"
+  },
+  "keywords": [
+    "video",
+    "storyboard",
+    "frame-extraction",
+    "ai-vision",
+    "subtitle",
+    "bigmodel",
+    "glm-4.6v-flash"
+  ],
+  "author": "idk500",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/idk500/video-storyboard.git"
+  },
+  "homepage": "https://github.com/idk500/video-storyboard#readme",
+  "bugs": {
+    "url": "https://github.com/idk500/video-storyboard/issues"
+  }
+}

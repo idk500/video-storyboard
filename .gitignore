@@ -1,0 +1,26 @@
+# 依赖
+node_modules/
+
+# 运行产物(每次跑视频生成的输出)
+storyboard/
+frames/
+*.jsonl
+
+# 环境/密钥
+.env
+.env.*
+
+# 测试视频与临时文件
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.webm
+_demo/
+temp_frames/
+.vtmp/
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+*.log

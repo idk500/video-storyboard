@@ -61,16 +61,27 @@ node extract_storyboard.mjs "$VIDEO" --gap $GAP --interval $INTERVAL
 echo
 
 # ---- 步骤2: AI 解读 ----
-echo "[3/4] AI 画面解读 (可能耗时较长,免费模型有限流,支持断点续传)..."
+echo "[3/5] AI 画面解读 (可能耗时较长,免费模型有限流,支持断点续传)..."
 echo "      (若中断,重新运行会自动跳过已完成帧继续)"
 echo
 node analyze_frames.mjs "$OUT_DIR/storyboard.json" "$OUT_DIR/frames" "$OUT_DIR/ai_descriptions.jsonl" || \
   echo "[!] AI 解读环节出现问题 (可能部分帧未完成)。基于已完成结果生成报告。"
 echo
 
-# ---- 步骤3: 报告 ----
-echo "[4/4] 生成分镜报告..."
-node build_report.mjs "$OUT_DIR/storyboard.json" "$OUT_DIR/ai_descriptions.jsonl" "$OUT_DIR/storyboard_final.md"
+# ---- 步骤3: 可选 OCR ----
+if [ "$ENABLE_OCR" = "1" ]; then
+  echo "[4/5] OCR 文字提取 (可选,需设置 OCR_API_KEY / OCR_BASE_URL / OCR_MODEL)..."
+  node ocr_frames_openai.mjs "$OUT_DIR/frames" "$OUT_DIR/ocr_text.jsonl" || \
+    echo "[!] OCR 环节出现问题。将跳过 OCR,继续生成报告。"
+  echo
+else
+  echo "[4/5] 跳过 OCR (如需启用: export ENABLE_OCR=1)"
+  echo
+fi
+
+# ---- 步骤4: 报告 ----
+echo "[5/5] 生成分镜报告..."
+node build_report.mjs "$OUT_DIR/storyboard.json" "$OUT_DIR/ai_descriptions.jsonl" "$OUT_DIR/storyboard_final.md" "$OUT_DIR/ocr_text.jsonl"
 echo
 
 echo "============================================"

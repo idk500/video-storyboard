@@ -44,7 +44,22 @@ npm install
 
 ### 2. 配置 API Key
 
-本工具**不内置任何 key**，必须自己设置环境变量：
+本工具**不内置任何 key**，必须自己设置环境变量。
+
+### 主视觉模型（分镜画面解读）
+
+必填：
+- `VISION_API_KEY`
+
+### 可选 OCR 模型（画面文字提取）
+
+如果你想额外提取帧中的文字（例如烧录字幕、招牌、屏幕文字），可选设置：
+- `OCR_API_KEY`
+- `OCR_BASE_URL`
+- `OCR_MODEL`
+- `ENABLE_OCR=1`
+
+OCR 采用**通用 OpenAI-compatible 接口**，不绑定任何具体供应商。
 
 #### Windows PowerShell
 
@@ -98,6 +113,7 @@ storyboard/
 ├── frames/                 # 每镜头一张图
 ├── storyboard.json         # 结构化镜头数据
 ├── ai_descriptions.jsonl   # AI 逐帧解读
+├── ocr_text.jsonl          # 可选 OCR 文字提取
 └── storyboard_final.md     # 最终分镜报告
 ```
 
@@ -184,10 +200,26 @@ export VISION_PROMPT="请重点描述人物关系和动作"
 node analyze_frames.mjs "storyboard/storyboard.json" "storyboard/frames"
 ```
 
-### 3. 生成最终报告
+### 3. 可选 OCR（画面文字提取）
 
 ```bash
-node build_report.mjs "storyboard/storyboard.json" "storyboard/ai_descriptions.jsonl"
+export ENABLE_OCR=1
+export OCR_API_KEY="你的ocr-key"
+export OCR_BASE_URL="https://your-openai-compatible-endpoint/v1"
+export OCR_MODEL="your-ocr-model"
+
+node ocr_frames_openai.mjs "storyboard/frames" "storyboard/ocr_text.jsonl"
+```
+
+说明：
+- 这是**可选步骤**，不会替代主视觉模型
+- 适合提取烧录字幕、UI、招牌、屏幕文字等
+- 结果会被并入最终报告
+
+### 4. 生成最终报告
+
+```bash
+node build_report.mjs "storyboard/storyboard.json" "storyboard/ai_descriptions.jsonl" "storyboard/storyboard_final.md" "storyboard/ocr_text.jsonl"
 ```
 
 输出：
@@ -259,6 +291,7 @@ video-storyboard/
 ├── run.sh
 ├── extract_storyboard.mjs
 ├── analyze_frames.mjs
+├── ocr_frames_openai.mjs
 └── build_report.mjs
 ```
 

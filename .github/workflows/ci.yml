@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Syntax check scripts
+        run: |
+          node --check extract_storyboard.mjs
+          node --check analyze_frames.mjs
+          node --check build_report.mjs
+
+      - name: Ensure MCP dependency resolves
+        run: node -e "console.log(require.resolve('@idk500/video-vision-mcp/dist/index.js'))"
+
+      - name: Verify launcher files exist
+        run: |
+          test -f run.sh
+          test -f "生成分镜.bat"

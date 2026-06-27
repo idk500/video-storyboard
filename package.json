@@ -6,7 +6,9 @@
   "scripts": {
     "extract": "node extract_storyboard.mjs",
     "analyze": "node analyze_frames.mjs",
-    "report": "node build_report.mjs"
+    "ocr": "node ocr_frames_openai.mjs",
+    "report": "node build_report.mjs",
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
     "@idk500/video-vision-mcp": "^1.2.0"
